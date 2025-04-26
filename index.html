@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>穹頂劇場表演推薦</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Helvetica Neue', 'Noto Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #container {
+      text-align: center;
+      max-width: 90%;
+    }
+    #question {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      background: none;
+      border: 2px solid #fff;
+      color: #fff;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      border-color: #ff0;
+      color: #ff0;
+      transform: scale(1.05);
+    }
+    #result {
+      display: none;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="question">載入中...</div>
+  <button class="btn" id="btnA" onclick="choose('A')">選項A</button>
+  <button class="btn" id="btnB" onclick="choose('B')">選項B</button>
+  <div id="result"></div>
+</div>
+
+<script>
+const questions = [
+  { text: "你更喜歡觀察微觀細節還是大尺度震撼？", A: "微觀細節", B: "大尺度震撼", scoreA: "NANONANO", scoreB: "油井之殤" },
+  { text: "你偏好數位影像還是手繪動畫？", A: "數位影像", B: "手繪動畫", scoreA: "異世界", scoreB: "植物情人" },
+  { text: "你的感受傾向：沉靜冥想還是情緒奔放？", A: "沉靜冥想", B: "情緒奔放", scoreA: "折疊合聲", scoreB: "夜遊" },
+  { text: "你想體驗混沌推演還是童話寓言？", A: "混沌推演", B: "童話寓言", scoreA: "混沌文法", scoreB: "綠豆神遊記" },
+  { text: "你更喜歡即時演算還是虛擬沉浸？", A: "即時演算", B: "虛擬沉浸", scoreA: "混沌文法", scoreB: "觀" },
+  { text: "你期待聲光粒子之舞還是身體動態雕塑？", A: "粒子聲光", B: "身體雕塑", scoreA: "折疊合聲", scoreB: "自由步" },
+  { text: "你嚮往黑暗夢境還是科技未來？", A: "黑暗夢境", B: "科技未來", scoreA: "夜遊", scoreB: "Heterotopia" }
+];
+
+let current = 0;
+let scores = {};
+
+function showQuestion() {
+  if (current < questions.length) {
+    const q = questions[current];
+    document.getElementById('question').innerText = q.text;
+    document.getElementById('btnA').innerText = q.A;
+    document.getElementById('btnB').innerText = q.B;
+  } else {
+    showResult();
+  }
+}
+
+function choose(choice) {
+  const q = questions[current];
+  const selectedScore = choice === 'A' ? q.scoreA : q.scoreB;
+  scores[selectedScore] = (scores[selectedScore] || 0) + 1;
+  current++;
+  showQuestion();
+}
+
+function showResult() {
+  document.getElementById('btnA').style.display = 'none';
+  document.getElementById('btnB').style.display = 'none';
+  document.getElementById('question').style.display = 'none';
+
+  let topPerformance = '';
+  let topScore = -1;
+  for (let perf in scores) {
+    if (scores[perf] > topScore) {
+      topScore = scores[perf];
+      topPerformance = perf;
+    }
+  }
+
+  const recommendations = {
+    "NANONANO": "推薦你觀看：NANONANO《Heterotopia: Dome》",
+    "油井之殤": "推薦你觀看：陳蘇楊X冼筱然《油井之殤：鯨落4993尺》",
+    "異世界": "推薦你觀看：桑德琳・德米耶《異世界》",
+    "植物情人": "推薦你觀看：夢想動畫《植物情人》",
+    "折疊合聲": "推薦你觀看：吳秉聖《折疊合聲》",
+    "夜遊": "推薦你觀看：莊禾《夜遊 2023》",
+    "混沌文法": "推薦你觀看：魏廷宇《混沌文法》",
+    "綠豆神遊記": "推薦你觀看：僻室《綠豆神遊記之魔 Dome 傳奇》",
+    "觀": "推薦你觀看：XTRUX x 晟《觀》",
+    "自由步": "推薦你觀看：驫舞劇場蘇威嘉《自由步：造山運動》",
+    "Heterotopia": "推薦你觀看：NANONANO《Heterotopia: Dome》"
+  };
+
+  document.getElementById('result').innerText = recommendations[topPerformance] || "感謝你的參與！";
+  document.getElementById('result').style.display = 'block';
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
